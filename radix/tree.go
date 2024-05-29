@@ -72,6 +72,7 @@ func (t Tree) Delete(path string) (tree Tree, err error) {
 
 	return t, nil
 }
+
 func (t Tree) Search(path string, kv func(n string, v interface{})) uint64 {
 	if path == "" {
 		return 0

@@ -54,8 +54,10 @@ func ParamsFromContext(ctx context.Context) Params {
 
 var HandlerKeyUserValue = "stdprouter.handler_id"
 
-const MethodAny = "ANY"
-const methodAnyIndex = 9
+const (
+	MethodAny      = "ANY"
+	methodAnyIndex = 9
+)
 
 type Router struct {
 	PageNotFoundHandler     http.HandlerFunc

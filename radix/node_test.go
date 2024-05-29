@@ -36,7 +36,8 @@ func TestNode_String(main *testing.T) {
 				children: []Node{
 					{path: "oo", key: 1},
 					{path: "aa", key: 2},
-				}},
+				},
+			},
 			exp: `
 /f
  ├oo=1
@@ -49,7 +50,8 @@ func TestNode_String(main *testing.T) {
 				key:  1,
 				children: []Node{
 					{path: "o", key: 2},
-				}},
+				},
+			},
 			exp: `
 /fo=1
   └o=2
@@ -75,7 +77,8 @@ func TestNode_String(main *testing.T) {
 							{path: "c", key: 6},
 						},
 					},
-				}},
+				},
+			},
 			exp: `
 /f
  ├o

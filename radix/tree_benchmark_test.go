@@ -5,8 +5,10 @@ import (
 	"testing"
 )
 
-var t Tree
-var key uint64
+var (
+	t   Tree
+	key uint64
+)
 
 // compare with https://github.com/fasthttp/router/blob/5c77f27ae28987b4cbb007be06f6ef793cdb062d/radix/tree_test.go#L299
 // fasthttp Benchmark_Get-8                       	33380914	        30.3 ns/op

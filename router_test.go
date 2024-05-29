@@ -2,10 +2,11 @@ package httprouter_test
 
 import (
 	"fmt"
+	"testing"
+
 	"github.com/makasim/httprouter"
 	"github.com/stretchr/testify/assert"
 	"github.com/valyala/fasthttp"
-	"testing"
 
 	"github.com/stretchr/testify/require"
 )
@@ -95,6 +96,10 @@ func TestRouter_Handle(main *testing.T) {
 		require.NoError(t, r.Add("TRACE", "/trace0", 81))
 		require.NoError(t, r.Add("TRACE", "/trace1", 82))
 		require.NoError(t, r.Add("TRACE", "/trace1/{param}", 83))
+
+		// wildcard param test
+		require.NoError(t, r.Add("POST", "/POST/foo/{*fooparam}", 110))
+		require.NoError(t, r.Add("POST", "/POST/foo/bar/{*barparam}", 111))
 
 		type test struct {
 			status    int
@@ -413,6 +418,27 @@ func TestRouter_Handle(main *testing.T) {
 			},
 
 			{
+				method:    "POST",
+				path:      "/POST/foo/match/by/wildcard",
+				status:    fasthttp.StatusOK,
+				handlerID: 110,
+				params: map[string]interface{}{
+					httprouter.HandlerKeyUserValue: uint64(110),
+					"*fooparam":                    []byte("match/by/wildcard"),
+				},
+			},
+			{
+				method:    "POST",
+				path:      "/POST/foo/bar/match/by/wildcard",
+				status:    fasthttp.StatusOK,
+				handlerID: 111,
+				params: map[string]interface{}{
+					httprouter.HandlerKeyUserValue: uint64(111),
+					"*barparam":                    []byte("match/by/wildcard"),
+				},
+			},
+
+			{
 				method: "UNSUPPORTED",
 				path:   "/method/unsupported",
 				status: fasthttp.StatusMethodNotAllowed,
@@ -504,7 +530,7 @@ func TestRouter_Remove(t *testing.T) {
 	require.NoError(t, r.Add("GET", "/foo", 1))
 	require.NoError(t, r.Add("POST", "/foo/{bar}", 2))
 
-	//guard
+	// guard
 	ctx := &fasthttp.RequestCtx{}
 	ctx.Request.Header.SetMethod(`GET`)
 	ctx.Request.URI().SetPath(`/foo`)
@@ -514,7 +540,7 @@ func TestRouter_Remove(t *testing.T) {
 	require.NoError(t, r.Remove("GET", "/foo"))
 	require.NoError(t, r.Remove("POST", "/foo/{bar}"))
 
-	//guard
+	// guard
 	ctx = &fasthttp.RequestCtx{}
 	ctx.Request.Header.SetMethod(`GET`)
 	ctx.Request.URI().SetPath(`/foo`)

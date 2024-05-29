@@ -8,8 +8,10 @@ import (
 	"github.com/savsgio/gotils"
 )
 
-var ErrPathAlreadyTaken = fmt.Errorf("path already taken")
-var ErrParamNameConflict = fmt.Errorf("param name conflict")
+var (
+	ErrPathAlreadyTaken  = fmt.Errorf("path already taken")
+	ErrParamNameConflict = fmt.Errorf("param name conflict")
+)
 
 type kind uint8
 
@@ -129,14 +131,21 @@ func (n Node) Insert(path string, key uint64) Node {
 			return n
 		}
 
-		n.children = append([]Node{
-			{
+		if len(n.children) > 0 {
+			n.children = append(n.children, Node{
 				path: path[:start],
 				children: []Node{
 					updateParamNode(Node{kind: param}, path[start:], key),
 				},
-			},
-		}, n.children...)
+			})
+		} else {
+			n.children = []Node{{
+				path: path[:start],
+				children: []Node{
+					updateParamNode(Node{kind: param}, path[start:], key),
+				},
+			}}
+		}
 		return n
 	}
 

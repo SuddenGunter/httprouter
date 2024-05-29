@@ -7,7 +7,6 @@ import (
 var nodeKey uint64
 
 func BenchmarkSearchStatic(b *testing.B) {
-
 	n := Node{}
 	n = n.Insert("/a", 1)
 	n = n.Insert("/foo/bar1", 1)
@@ -25,7 +24,6 @@ func BenchmarkSearchStatic(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		nodeKey = n.Search("foo/bar5", func(n string, v interface{}) {
-
 		})
 		if nodeKey != 5 {
 			b.Fatalf("result %d is not equal to 5", nodeKey)
@@ -51,7 +49,6 @@ func BenchmarkSearchDynamic(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		nodeKey = n.Search("foo/custom", func(n string, v interface{}) {
-
 		})
 		if nodeKey != 10 {
 			b.Fatalf("result %d is not equal to 10", nodeKey)

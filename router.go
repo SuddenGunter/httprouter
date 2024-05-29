@@ -88,7 +88,7 @@ func (r *Router) Add(method, path string, handlerID uint64) error {
 
 // Remove removes a route for method and path frmo the router
 // It is not safe for concurrent use.
-//Remove routes before using Handle or protect Add, Remove, Handle with mutex.
+// Remove routes before using Handle or protect Add, Remove, Handle with mutex.
 func (r *Router) Remove(method, path string) error {
 	methodIndex := r.methodIndexOf(method)
 	if methodIndex == -1 {
